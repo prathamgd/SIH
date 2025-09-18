@@ -336,7 +336,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        .search-bar, .comparison-input {
+        .search-bar {
             width: 100%;
             padding: 15px;
             border: 2px solid #D7CCC8;
@@ -344,7 +344,7 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
-        .search-bar:focus, .comparison-input:focus {
+        .search-bar:focus {
             outline: none;
             border-color: #538A19;
             box-shadow: 0 0 0 4px rgba(83, 138, 25, 0.1);
@@ -431,6 +431,20 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+        }
+        #comparison-tray {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        #comparison-tray .btn {
+            margin-top: 0;
         }
         @media (min-width: 769px) {
             .header {
@@ -614,56 +628,87 @@
         <div id="careers" class="module">
             <h2><span class="icon">C</span>Career Exploration Hub</h2>
             <input type="text" class="search-bar" placeholder="Search for careers (e.g., 'software developer', 'doctor', 'teacher')..." oninput="filterCareers(this.value)">
+
+            <div id="comparison-tray">
+                <span style="font-weight: 600;">Selected for Comparison: <span id="comparison-count">0/2</span></span>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button id="start-compare-btn" class="btn" onclick="compareSelectedCourses()" disabled>Compare</button>
+                    <button id="clear-compare-btn" class="btn btn-secondary" onclick="clearComparison()">Clear</button>
+                </div>
+            </div>
+
+            <div id="comparison-results" class="roadmap-item" style="display: none; margin-top: 20px;">
+                </div>
+
             <div class="career-grid">
-                <div class="career-card" data-category="technology">
+                <div class="career-card" data-career-id="b.tech cse">
                     <div class="career-badge">Technology</div>
-                    <h3>Software Developer</h3>
+                    <h3>B.Tech Computer Science Engineering</h3>
                     <p>Design, develop, and maintain software applications and systems.</p>
                     <p><strong>Avg. Salary:</strong> ₹6-15 LPA</p>
                     <p><strong>Growth:</strong> 22% (Very High)</p>
-                    <button class="btn" onclick="showCareerDetails('software-developer')">Learn More</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="btn" onclick="showCareerDetails('software-developer')">Learn More</button>
+                        <button class="btn btn-secondary" onclick="addToComparison('b.tech cse', this)">Add to Compare</button>
+                    </div>
                 </div>
-                <div class="career-card" data-category="healthcare">
+                <div class="career-card" data-career-id="b.sc data science">
                     <div class="career-badge">Technology</div>
-                    <h3>Data Scientist</h3>
+                    <h3>B.Sc Data Science</h3>
                     <p>Analyze complex data to help organizations make informed decisions.</p>
                     <p><strong>Avg. Salary:</strong> ₹8-20 LPA</p>
                     <p><strong>Growth:</strong> 35% (Extremely High)</p>
-                    <button class="btn" onclick="showCareerDetails('data-scientist')">Learn More</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="btn" onclick="showCareerDetails('data-scientist')">Learn More</button>
+                        <button class="btn btn-secondary" onclick="addToComparison('b.sc data science', this)">Add to Compare</button>
+                    </div>
                 </div>
-                <div class="career-card" data-category="healthcare">
-                    <div class="career-badge">Healthcare</div>
-                    <h3>Medical Doctor</h3>
-                    <p>Diagnose and treat illnesses, injuries, and other health conditions.</p>
-                    <p><strong>Avg. Salary:</strong> ₹10-50 LPA</p>
-                    <p><strong>Growth:</strong> 15% (High)</p>
-                    <button class="btn" onclick="showCareerDetails('doctor')">Learn More</button>
+                <div class="career-card" data-career-id="b.tech mechanical">
+                    <div class="career-badge">Engineering</div>
+                    <h3>B.Tech Mechanical Engineering</h3>
+                    <p>Focuses on the design, analysis, and manufacturing of mechanical systems.</p>
+                    <p><strong>Avg. Salary:</strong> ₹5-12 LPA</p>
+                    <p><strong>Growth:</strong> 10% (Medium)</p>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="btn" onclick="showCareerDetails('mechanical-engineer')">Learn More</button>
+                        <button class="btn btn-secondary" onclick="addToComparison('b.tech mechanical', this)">Add to Compare</button>
+                    </div>
                 </div>
-                <div class="career-card" data-category="education">
+                <div class="career-card" data-career-id="b.com">
                     <div class="career-badge">Business</div>
-                    <h3>Digital Marketing Specialist</h3>
-                    <p>Create and manage online marketing campaigns across digital platforms.</p>
-                    <p><strong>Avg. Salary:</strong> ₹4-12 LPA</p>
-                    <p><strong>Growth:</strong> 25% (Very High)</p>
-                    <button class="btn" onclick="showCareerDetails('digital-marketing')">Learn More</button>
+                    <h3>Bachelor of Commerce (B.Com)</h3>
+                    <p>Covers business, accounting, finance, and economics.</p>
+                    <p><strong>Avg. Salary:</strong> ₹4-10 LPA</p>
+                    <p><strong>Growth:</strong> 15% (High)</p>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="btn" onclick="showCareerDetails('bcom-professional')">Learn More</button>
+                        <button class="btn btn-secondary" onclick="addToComparison('b.com', this)">Add to Compare</button>
+                    </div>
                 </div>
-                <div class="career-card" data-category="government">
+                <div class="career-card" data-career-id="civil-services">
                     <div class="career-badge">Government</div>
                     <h3>Civil Services (IAS/IPS)</h3>
                     <p>Serve in administrative and policy-making roles in government.</p>
                     <p><strong>Avg. Salary:</strong> ₹8-25 LPA</p>
                     <p><strong>Growth:</strong> Stable</p>
-                    <button class="btn" onclick="showCareerDetails('civil-services')">Learn More</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="btn" onclick="showCareerDetails('civil-services')">Learn More</button>
+                        <button class="btn btn-secondary" onclick="addToComparison('civil-services', this)">Add to Compare</button>
+                    </div>
                 </div>
-                <div class="career-card" data-category="creative">
+                <div class="career-card" data-career-id="ux-designer">
                     <div class="career-badge">Creative</div>
                     <h3>UX/UI Designer</h3>
                     <p>Design user experiences and interfaces for digital products.</p>
                     <p><strong>Avg. Salary:</strong> ₹5-18 LPA</p>
                     <p><strong>Growth:</strong> 30% (Very High)</p>
-                    <button class="btn" onclick="showCareerDetails('ux-designer')">Learn More</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="btn" onclick="showCareerDetails('ux-designer')">Learn More</button>
+                        <button class="btn btn-secondary" onclick="addToComparison('ux-designer', this)">Add to Compare</button>
+                    </div>
                 </div>
             </div>
+            
             <div id="career-details" style="display: none; margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 12px;">
                 <h3>Software Developer - Detailed Overview</h3>
                 <div style="margin: 20px 0;">
@@ -695,20 +740,6 @@
                 <h3>Your Personalized Roadmap</h3>
                 <p>Based on your interest in <strong>Technology & Research</strong> and personality type <strong>INTJ</strong></p>
             </div>
-            
-            <div class="roadmap-item" id="course-comparison-input">
-                <h4>Course Comparison</h4>
-                <p style="color: #666; font-size: 0.95rem; margin-bottom: 10px;">Enter two courses to see a side-by-side comparison.</p>
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <input type="text" class="comparison-input" id="course1-input" placeholder="e.g., B.Tech CSE">
-                    <input type="text" class="comparison-input" id="course2-input" placeholder="e.g., B.Sc Data Science">
-                    <button class="btn" onclick="compareCourses()">Compare</button>
-                </div>
-            </div>
-
-            <div id="comparison-results" class="roadmap-item" style="display: none; margin-top: 20px;">
-                </div>
-            
             <div class="roadmap-item">
                 <h4>Class 11-12 Subject Combination</h4>
                 <p><strong>Recommended:</strong> Physics, Chemistry, Mathematics, Computer Science</p>
@@ -1008,18 +1039,46 @@
                     skills: 'Thermodynamics, robotics, and CAD software.',
                     career: 'Mechanical Engineer, Manufacturing Engineer, Automotive Engineer.',
                     duration: '4 years.'
+                },
+                'civil-services': {
+                    title: 'Civil Services (IAS/IPS)',
+                    focus: 'Public administration, policy implementation, and law enforcement.',
+                    skills: 'Leadership, decision-making, and general knowledge of civics.',
+                    career: 'Indian Administrative Service (IAS) Officer, Indian Police Service (IPS) Officer.',
+                    duration: 'Preparation varies (often 1-3 years post-graduation).'
+                },
+                'ux-designer': {
+                    title: 'UX/UI Designer',
+                    focus: 'Creating user-friendly and aesthetically pleasing digital interfaces.',
+                    skills: 'Wireframing, prototyping, user research, and graphic design tools.',
+                    career: 'Product Designer, User Researcher, UI Artist.',
+                    duration: 'Degree in design or computer science, and portfolio building.'
+                }
+            };
+            
+            const coursesToCompare = [];
+            const comparisonCount = document.getElementById('comparison-count');
+            const startCompareBtn = document.getElementById('start-compare-btn');
+            const comparisonResultsDiv = document.getElementById('comparison-results');
+            const allAddButtons = document.querySelectorAll('.add-to-compare-btn');
+
+            window.addToComparison = (courseId, button) => {
+                if (coursesToCompare.length < 2) {
+                    coursesToCompare.push(courseId);
+                    button.disabled = true;
+                    button.textContent = 'Added';
+                    comparisonCount.textContent = coursesToCompare.length + '/2';
+                    if (coursesToCompare.length === 2) {
+                        startCompareBtn.disabled = false;
+                    }
                 }
             };
 
-            window.compareCourses = () => {
-                const course1Input = document.getElementById('course1-input').value.toLowerCase();
-                const course2Input = document.getElementById('course2-input').value.toLowerCase();
-                const resultsDiv = document.getElementById('comparison-results');
-                
-                const course1 = courseData[course1Input];
-                const course2 = courseData[course2Input];
+            window.compareSelectedCourses = () => {
+                if (coursesToCompare.length === 2) {
+                    const course1 = courseData[coursesToCompare[0]];
+                    const course2 = courseData[coursesToCompare[1]];
 
-                if (course1 && course2) {
                     const comparisonHtml = `
                         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                             <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #eaf5e1;">
@@ -1031,7 +1090,7 @@
                                     <li><strong>Duration:</strong> ${course1.duration}</li>
                                 </ul>
                             </div>
-                            <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #f3eaf5;">
+                            <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #c8e6c9;">
                                 <h5>${course2.title}</h5>
                                 <ul style="list-style: none; padding: 0;">
                                     <li><strong>Focus:</strong> ${course2.focus}</li>
@@ -1042,12 +1101,23 @@
                             </div>
                         </div>
                     `;
-                    resultsDiv.innerHTML = comparisonHtml;
-                    resultsDiv.style.display = 'block';
+                    comparisonResultsDiv.innerHTML = comparisonHtml;
+                    comparisonResultsDiv.style.display = 'block';
                 } else {
-                    resultsDiv.innerHTML = '<p style="color: red;">Please enter valid course names from the list (e.g., B.Tech CSE, B.Sc Data Science).</p>';
-                    resultsDiv.style.display = 'block';
+                    comparisonResultsDiv.innerHTML = '<p style="color: red;">Please select exactly two courses to compare.</p>';
+                    comparisonResultsDiv.style.display = 'block';
                 }
+            };
+
+            window.clearComparison = () => {
+                coursesToCompare.length = 0;
+                comparisonCount.textContent = '0/2';
+                startCompareBtn.disabled = true;
+                comparisonResultsDiv.style.display = 'none';
+                allAddButtons.forEach(button => {
+                    button.disabled = false;
+                    button.textContent = 'Add to Compare';
+                });
             };
         });
     </script>
