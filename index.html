@@ -10,6 +10,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --bg-color: #FFFFF0;
+            --card-color: #FFFFFF;
+            --text-color: #2F4F4F;
+            --heading-color: #2c3e50;
+            --primary-color: #538A19;
+            --secondary-color: #8cd96a;
+            --border-color: #D7CCC8;
+            --subtle-border-color: #eee;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --notification-bg: #d4edda;
+            --notification-text: #155724;
+            --tray-bg: #f5f5f5;
+        }
+
+        body.dark-mode {
+            --bg-color: #1A1A1A;
+            --card-color: #2B2B2B;
+            --text-color: #E0E0E0;
+            --heading-color: #FFFFFF;
+            --primary-color: #76C74A;
+            --secondary-color: #8cd96a;
+            --border-color: #444444;
+            --subtle-border-color: #3a3a3a;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --notification-bg: #2E4B37;
+            --notification-text: #A7D7B4;
+            --tray-bg: #222222;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -18,9 +48,10 @@
 
         body {
             font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #FFFFF0;
+            background: var(--bg-color);
             min-height: 100vh;
-            color: #2F4F4F;
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         .container {
@@ -29,18 +60,44 @@
             padding: 20px;
         }
         .header {
-            background: #FFFFFF;
+            background: var(--card-color);
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            border: 1px solid #eee;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--subtle-border-color);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             text-align: center;
+            position: relative;
         }
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 70px;
+            height: 34px;
+            background-color: var(--subtle-border-color);
+            border-radius: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 4px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .theme-icon {
+            font-size: 18px;
+            transition: opacity 0.3s ease;
+        }
+        .theme-icon.sun { opacity: 1; }
+        .theme-icon.moon { opacity: 0.5; }
+
+        body.dark-mode .theme-icon.sun { opacity: 0.5; }
+        body.dark-mode .theme-icon.moon { opacity: 1; }
+
         .logo-container {
             display: flex;
             flex-direction: column;
@@ -57,16 +114,16 @@
         .header-text {
             text-align: center;
             margin-top: 5px;
-            
         }
         .header h1 {
-            color: #538A19;
+            color: var(--primary-color);
             font-size: 2.8rem;
             font-weight: 700;
             margin: 0;
         }
         .header p {
-            color: #666;
+            color: var(--text-color);
+            opacity: 0.8;
             font-size: 1.2rem;
             font-weight: 500;
             margin-top: 5px;
@@ -79,43 +136,42 @@
             flex-wrap: wrap;
         }
         .nav-tab {
-            background: #FFFFFF;
-            border: 1px solid #D7CCC8;
-            padding: 15px 25px; /* Adjusted padding for icons */
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            padding: 15px 25px;
             border-radius: 25px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            color: #555;
+            color: var(--text-color);
             transition: all 0.3s ease;
-            display: flex; /* NEW: For icon alignment */
-            align-items: center; /* NEW: For icon alignment */
-            gap: 10px; /* NEW: Space between icon and text */
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .nav-tab:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            border-color: #538A19;
+            box-shadow: 0 6px 20px var(--shadow-color);
+            border-color: var(--primary-color);
         }
         .nav-tab.active {
-            background: #538A19;
+            background: var(--primary-color);
             color: white;
-            border-color: #538A19;
+            border-color: var(--primary-color);
             box-shadow: 0 6px 20px rgba(83, 138, 25, 0.3);
         }
-        /* NEW: Styles for the navigation icons */
         .nav-icon {
             width: 20px;
             height: 20px;
-            fill: currentColor; /* Icon color matches text color */
+            fill: currentColor;
         }
         .module {
             display: none;
-            background: #FFFFFF;
+            background: var(--card-color);
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            border: 1px solid #eee;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--subtle-border-color);
             animation: fadeIn 0.5s ease-in;
         }
         .module.active {
@@ -126,7 +182,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .module h2 {
-            color: #2c3e50;
+            color: var(--heading-color);
             margin-bottom: 20px;
             font-size: 1.8rem;
             font-weight: 600;
@@ -140,7 +196,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: #538A19;
+            background: var(--primary-color);
             color: white;
             border-radius: 50%;
             font-size: 1.4rem;
@@ -169,8 +225,8 @@
             margin-top: 20px;
         }
         .career-card {
-            background: white;
-            border: 1px solid #e0e0e0;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
             transition: all 0.3s ease;
@@ -180,15 +236,15 @@
         }
         .career-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border-color: #538A19;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            border-color: var(--primary-color);
         }
         .career-card > p {
             flex-grow: 1;
         }
         .career-badge {
             display: inline-block;
-            background: #8cd96a;
+            background: var(--secondary-color);
             color: #333;
             padding: 5px 12px;
             border-radius: 15px;
@@ -199,32 +255,32 @@
         .progress-bar {
             width: 100%;
             height: 20px;
-            background: #e0e0e0;
+            background: var(--subtle-border-color);
             border-radius: 10px;
             overflow: hidden;
             margin: 10px 0;
         }
         .progress-fill {
             height: 100%;
-            background: #538A19;
+            background: var(--primary-color);
             border-radius: 10px;
             transition: width 0.5s ease;
         }
         .roadmap-item {
-            background: white;
-            border-left: 4px solid #538A19;
+            background: var(--card-color);
+            border-left: 4px solid var(--primary-color);
             margin-bottom: 15px;
             padding: 15px 20px;
             border-radius: 0 10px 10px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px var(--shadow-color);
         }
         .roadmap-item h4 {
-            color: #2c3e50;
+            color: var(--heading-color);
             margin-bottom: 8px;
             font-weight: 600;
         }
         .scholarship-card {
-            background: #538A19;
+            background: var(--primary-color);
             color: white;
             padding: 20px;
             border-radius: 12px;
@@ -233,21 +289,21 @@
         .mentor-profile {
             display: flex;
             align-items: center;
-            background: white;
-            border: 1px solid #e0e0e0;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
             transition: all 0.3s ease;
         }
         .mentor-profile:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px var(--shadow-color);
         }
         .mentor-avatar {
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: #538A19;
+            background: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -256,7 +312,7 @@
             margin-right: 15px;
         }
         .btn {
-            background: #538A19;
+            background: var(--primary-color);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -265,17 +321,17 @@
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px var(--shadow-color);
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px var(--shadow-color);
         }
         .career-card .btn, .dashboard-card .btn, .quiz-question .btn, .dashboard-card p + .btn {
             margin-top: 15px;
         }
         .btn-secondary {
-            background: #8cd96a;
+            background: var(--secondary-color);
             color: #333;
         }
         .stats-grid {
@@ -285,20 +341,20 @@
             margin-top: 20px;
         }
         .stat-card {
-            background: white;
+            background: var(--card-color);
             padding: 20px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px var(--shadow-color);
         }
         .stat-number {
             font-size: 2rem;
             font-weight: bold;
-            color: #538A19;
+            color: var(--primary-color);
             margin-bottom: 5px;
         }
         .quiz-question {
-            background: #f8f9fa;
+            background: var(--bg-color);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 15px;
@@ -309,26 +365,26 @@
             margin-top: 15px;
         }
         .quiz-option {
-            background: white;
-            border: 2px solid #D7CCC8;
+            background: var(--card-color);
+            border: 2px solid var(--border-color);
             padding: 15px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         .quiz-option:hover {
-            border-color: #538A19;
-            background: #F9F5F3;
+            border-color: var(--primary-color);
+            background: var(--bg-color);
         }
         .quiz-option.selected {
-            border-color: #538A19;
-            background: #538A19;
+            border-color: var(--primary-color);
+            background: var(--primary-color);
             color: white;
         }
         .notification {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
+            background: var(--notification-bg);
+            border: 1px solid var(--primary-color);
+            color: var(--notification-text);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 25px;
@@ -340,22 +396,24 @@
             margin-top: 20px;
         }
         .dashboard-card {
-            background: white;
+            background: var(--card-color);
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px var(--shadow-color);
         }
         .search-bar {
             width: 100%;
             padding: 15px;
-            border: 2px solid #D7CCC8;
+            border: 2px solid var(--border-color);
             border-radius: 25px;
             font-size: 1rem;
             transition: all 0.3s ease;
+            background-color: var(--card-color);
+            color: var(--text-color);
         }
         .search-bar:focus {
             outline: none;
-            border-color: #538A19;
+            border-color: var(--primary-color);
             box-shadow: 0 0 0 4px rgba(83, 138, 25, 0.1);
         }
         .profile-grid {
@@ -365,17 +423,17 @@
             margin-top: 20px;
         }
         .profile-sidebar {
-            background: #FFFFFF;
+            background: var(--card-color);
             padding: 30px 20px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px var(--shadow-color);
         }
         .profile-avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: #538A19;
+            background: var(--primary-color);
             color: white;
             display: flex;
             align-items: center;
@@ -385,6 +443,9 @@
             margin: 0 auto 15px;
             border: 4px solid #eaf5e1;
         }
+        body.dark-mode .profile-avatar {
+            border-color: var(--card-color);
+        }
         .profile-main .dashboard-card {
             margin-bottom: 20px;
         }
@@ -393,6 +454,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            justify-content: center;
         }
         .profile-badge {
             display: inline-block;
@@ -404,6 +466,11 @@
             font-weight: 600;
             border: 1px solid #cde5b8;
         }
+        body.dark-mode .profile-badge {
+            background: rgba(118, 199, 74, 0.2);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
         .filter-tabs {
             display: flex;
             gap: 10px;
@@ -411,27 +478,28 @@
             flex-wrap: wrap;
         }
         .filter-tab {
-            background: white;
-            border: 1px solid #D7CCC8;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
             padding: 8px 18px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
-            color: #555;
+            color: var(--text-color);
             transition: all 0.3s ease;
         }
         .filter-tab:hover {
-            border-color: #538A19;
-            color: #538A19;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
         .filter-tab.active {
-            background: #538A19;
+            background: var(--primary-color);
             color: white;
-            border-color: #538A19;
+            border-color: var(--primary-color);
         }
         .certificate-provider {
-            color: #777;
+            color: var(--text-color);
+            opacity: 0.7;
             font-size: 0.9rem;
             margin-bottom: 10px;
         }
@@ -442,7 +510,7 @@
             gap: 8px;
         }
         #comparison-tray {
-            background: #f5f5f5;
+            background: var(--tray-bg);
             padding: 15px;
             border-radius: 12px;
             margin-top: 20px;
@@ -454,6 +522,9 @@
         }
         #comparison-tray .btn {
             margin-top: 0;
+        }
+        #career-details {
+             background: var(--bg-color) !important;
         }
         @media (min-width: 769px) {
             .header {
@@ -475,8 +546,17 @@
             .container {
                 padding: 10px;
             }
+            .header {
+                padding-bottom: 70px; /* Space for the toggle on mobile */
+            }
             .header h1 {
                 font-size: 2rem;
+            }
+            .theme-switcher {
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
             }
             .nav-tabs {
                 flex-direction: column;
@@ -493,7 +573,7 @@
             }
         }
         #ym-chat-btn, #ym-chat-header, #ym-chat-send, .ym-msg.user {
-            background: #538A19;
+            background: var(--primary-color);
             font-family: 'Quicksand', sans-serif;
         }
         #ym-chat-header, #ym-chat-input, .ym-msg.bot, .ym-msg.user, .ym-quick button {
@@ -504,6 +584,10 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="theme-switcher">
+                <div class="theme-icon sun">☀️</div>
+                <div class="theme-icon moon">🌙</div>
+            </div>
             <div class="logo-container">
                 <img src="https://raw.githubusercontent.com/prathamgd/SIH/main/Untitled%20design%20(1).png" alt="Yuva Marg Logo" class="header-logo">
                 <div class="header-text">
@@ -591,7 +675,7 @@
                 </div>
                 <div class="dashboard-card">
                     <h3>Recent Activity</h3>
-                    <div style="font-size: 0.9rem; color: #666; margin-top: 15px; line-height: 1.8;">
+                    <div style="font-size: 0.9rem; margin-top: 15px; line-height: 1.8;">
                         <p>• Explored Software Developer career</p>
                         <p>• Saved JEE Main information</p>
                         <p>• Connected with mentor Priya S.</p>
@@ -680,9 +764,9 @@
                     <p>Design, develop, and maintain software applications and systems.</p>
                     <p><strong>Avg. Salary:</strong> ₹6-15 LPA</p>
                     <p><strong>Growth:</strong> 22% (Very High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: auto;">
                         <button class="btn" onclick="showCareerDetails('software-developer')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.tech cse', this)">Add to Compare</button>
+                        <button class="btn btn-secondary add-to-compare-btn" onclick="addToComparison('b.tech cse', this)">Add to Compare</button>
                     </div>
                 </div>
                 <div class="career-card" data-career-id="b.sc data science">
@@ -691,9 +775,9 @@
                     <p>Analyze complex data to help organizations make informed decisions.</p>
                     <p><strong>Avg. Salary:</strong> ₹8-20 LPA</p>
                     <p><strong>Growth:</strong> 35% (Extremely High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: auto;">
                         <button class="btn" onclick="showCareerDetails('data-scientist')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.sc data science', this)">Add to Compare</button>
+                        <button class="btn btn-secondary add-to-compare-btn" onclick="addToComparison('b.sc data science', this)">Add to Compare</button>
                     </div>
                 </div>
                 <div class="career-card" data-career-id="b.tech mechanical">
@@ -702,9 +786,9 @@
                     <p>Focuses on the design, analysis, and manufacturing of mechanical systems.</p>
                     <p><strong>Avg. Salary:</strong> ₹5-12 LPA</p>
                     <p><strong>Growth:</strong> 10% (Medium)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: auto;">
                         <button class="btn" onclick="showCareerDetails('mechanical-engineer')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.tech mechanical', this)">Add to Compare</button>
+                        <button class="btn btn-secondary add-to-compare-btn" onclick="addToComparison('b.tech mechanical', this)">Add to Compare</button>
                     </div>
                 </div>
                 <div class="career-card" data-career-id="b.com">
@@ -713,9 +797,9 @@
                     <p>Covers business, accounting, finance, and economics.</p>
                     <p><strong>Avg. Salary:</strong> ₹4-10 LPA</p>
                     <p><strong>Growth:</strong> 15% (High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: auto;">
                         <button class="btn" onclick="showCareerDetails('bcom-professional')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.com', this)">Add to Compare</button>
+                        <button class="btn btn-secondary add-to-compare-btn" onclick="addToComparison('b.com', this)">Add to Compare</button>
                     </div>
                 </div>
                 <div class="career-card" data-career-id="civil-services">
@@ -724,9 +808,9 @@
                     <p>Serve in administrative and policy-making roles in government.</p>
                     <p><strong>Avg. Salary:</strong> ₹8-25 LPA</p>
                     <p><strong>Growth:</strong> Stable</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: auto;">
                         <button class="btn" onclick="showCareerDetails('civil-services')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('civil-services', this)">Add to Compare</button>
+                        <button class="btn btn-secondary add-to-compare-btn" onclick="addToComparison('civil-services', this)">Add to Compare</button>
                     </div>
                 </div>
                 <div class="career-card" data-career-id="ux-designer">
@@ -735,14 +819,14 @@
                     <p>Design user experiences and interfaces for digital products.</p>
                     <p><strong>Avg. Salary:</strong> ₹5-18 LPA</p>
                     <p><strong>Growth:</strong> 30% (Very High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: auto;">
                         <button class="btn" onclick="showCareerDetails('ux-designer')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('ux-designer', this)">Add to Compare</button>
+                        <button class="btn btn-secondary add-to-compare-btn" onclick="addToComparison('ux-designer', this)">Add to Compare</button>
                     </div>
                 </div>
             </div>
             
-            <div id="career-details" style="display: none; margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 12px;">
+            <div id="career-details" style="display: none; margin-top: 30px; padding: 25px; border-radius: 12px;">
                 <h3>Software Developer - Detailed Overview</h3>
                 <div style="margin: 20px 0;">
                     <h4>Day-to-Day Activities:</h4>
@@ -769,7 +853,7 @@
         </div>
         <div id="pathway" class="module">
             <h2><span class="icon">A</span>AI-Powered Academic Planner</h2>
-            <div style="background: #e9f7e4; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+            <div class="notification">
                 <h3>Your Personalized Roadmap</h3>
                 <p>Based on your interest in <strong>Technology & Research</strong> and personality type <strong>INTJ</strong></p>
             </div>
@@ -782,7 +866,7 @@
                 <h4>Entrance Exams to Prepare</h4>
                 <p><strong>Primary:</strong> JEE Main & Advanced (Engineering)</p>
                 <p><strong>Additional:</strong> BITSAT, VITEEE, COMEDK, State Engineering Entrance Exams</p>
-                <p><strong>Deadlines:</strong> JEE Main Registration - Jan 2025, Exam - April 2025</p>
+                <p><strong>Deadlines:</strong> JEE Main Registration - Jan 2026, Exam - April 2026</p>
             </div>
             <div class="roadmap-item">
                 <h4>Recommended Undergraduate Programs</h4>
@@ -834,30 +918,30 @@
             <h3>Upcoming Entrance Exams</h3>
             <div class="dashboard-grid">
                 <div class="dashboard-card">
-                    <h4>JEE Main 2025</h4>
-                    <p><strong>Registration:</strong> Jan 2025</p>
-                    <p><strong>Exam Date:</strong> April 2025</p>
+                    <h4>JEE Main 2026</h4>
+                    <p><strong>Registration:</strong> Jan 2026</p>
+                    <p><strong>Exam Date:</strong> April 2026</p>
                     <p><strong>Application Fee:</strong> ₹1000</p>
                     <button class="btn">Set Reminder</button>
                 </div>
                 <div class="dashboard-card">
-                    <h4>NEET 2025</h4>
-                    <p><strong>Registration:</strong> Feb 2025</p>
-                    <p><strong>Exam Date:</strong> May 2025</p>
+                    <h4>NEET 2026</h4>
+                    <p><strong>Registration:</strong> Feb 2026</p>
+                    <p><strong>Exam Date:</strong> May 2026</p>
                     <p><strong>Application Fee:</strong> ₹1700</p>
                     <button class="btn">Set Reminder</button>
                 </div>
                 <div class="dashboard-card">
-                    <h4>CLAT 2025</h4>
-                    <p><strong>Registration:</strong> Jan 2025</p>
-                    <p><strong>Exam Date:</strong> May 2025</p>
+                    <h4>CLAT 2026</h4>
+                    <p><strong>Registration:</strong> Jan 2026</p>
+                    <p><strong>Exam Date:</strong> May 2026</p>
                     <p><strong>Application Fee:</strong> ₹4000</p>
                     <button class="btn">Set Reminder</button>
                 </div>
                 <div class="dashboard-card">
-                    <h4>CUET 2025</h4>
-                    <p><strong>Registration:</strong> Mar 2025</p>
-                    <p><strong>Exam Date:</strong> May/June 2025</p>
+                    <h4>CUET 2026</h4>
+                    <p><strong>Registration:</strong> Mar 2026</p>
+                    <p><strong>Exam Date:</strong> May/June 2026</p>
                     <p><strong>Application Fee:</strong> ₹750</p>
                     <button class="btn">Set Reminder</button>
                 </div>
@@ -1096,15 +1180,19 @@
             const allAddButtons = document.querySelectorAll('.add-to-compare-btn');
 
             window.addToComparison = (courseId, button) => {
-                if (coursesToCompare.length < 2) {
+                if (coursesToCompare.includes(courseId)) {
+                    const index = coursesToCompare.indexOf(courseId);
+                    coursesToCompare.splice(index, 1);
+                    button.textContent = 'Add to Compare';
+                    button.classList.remove('active');
+                } else if (coursesToCompare.length < 2) {
                     coursesToCompare.push(courseId);
-                    button.disabled = true;
                     button.textContent = 'Added';
-                    comparisonCount.textContent = coursesToCompare.length + '/2';
-                    if (coursesToCompare.length === 2) {
-                        startCompareBtn.disabled = false;
-                    }
+                    button.classList.add('active');
                 }
+                
+                comparisonCount.textContent = coursesToCompare.length + '/2';
+                startCompareBtn.disabled = coursesToCompare.length !== 2;
             };
 
             window.compareSelectedCourses = () => {
@@ -1113,19 +1201,19 @@
                     const course2 = courseData[coursesToCompare[1]];
 
                     const comparisonHtml = `
-                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                            <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #eaf5e1;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
                                 <h5>${course1.title}</h5>
-                                <ul style="list-style: none; padding: 0;">
+                                <ul style="list-style: none; padding: 0; line-height: 1.8;">
                                     <li><strong>Focus:</strong> ${course1.focus}</li>
                                     <li><strong>Skills:</strong> ${course1.skills}</li>
                                     <li><strong>Career:</strong> ${course1.career}</li>
                                     <li><strong>Duration:</strong> ${course1.duration}</li>
                                 </ul>
                             </div>
-                            <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #c8e6c9;">
+                            <div>
                                 <h5>${course2.title}</h5>
-                                <ul style="list-style: none; padding: 0;">
+                                <ul style="list-style: none; padding: 0; line-height: 1.8;">
                                     <li><strong>Focus:</strong> ${course2.focus}</li>
                                     <li><strong>Skills:</strong> ${course2.skills}</li>
                                     <li><strong>Career:</strong> ${course2.career}</li>
@@ -1136,9 +1224,6 @@
                     `;
                     comparisonResultsDiv.innerHTML = comparisonHtml;
                     comparisonResultsDiv.style.display = 'block';
-                } else {
-                    comparisonResultsDiv.innerHTML = '<p style="color: red;">Please select exactly two courses to compare.</p>';
-                    comparisonResultsDiv.style.display = 'block';
                 }
             };
 
@@ -1147,11 +1232,35 @@
                 comparisonCount.textContent = '0/2';
                 startCompareBtn.disabled = true;
                 comparisonResultsDiv.style.display = 'none';
-                allAddButtons.forEach(button => {
-                    button.disabled = false;
+                
+                document.querySelectorAll('.add-to-compare-btn.active').forEach(button => {
+                    button.classList.remove('active');
                     button.textContent = 'Add to Compare';
                 });
             };
+            const themeSwitcher = document.querySelector('.theme-switcher');
+            const body = document.body;
+
+            // Function to apply theme
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                } else {
+                    body.classList.remove('dark-mode');
+                }
+            };
+
+            // Event listener for the toggle
+            themeSwitcher.addEventListener('click', () => {
+                const isDarkMode = body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            });
+
+            // Apply the saved theme on page load
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            }
         });
     </script>
 </body>
