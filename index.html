@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         * {
@@ -57,7 +58,6 @@
         .header-text {
             text-align: center;
             margin-top: 5px;
-            
         }
         .header h1 {
             color: #538A19;
@@ -88,6 +88,9 @@
             font-weight: 600;
             color: #555;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .nav-tab:hover {
             transform: translateY(-2px);
@@ -99,6 +102,14 @@
             color: white;
             border-color: #538A19;
             box-shadow: 0 6px 20px rgba(83, 138, 25, 0.3);
+        }
+        .nav-tab.active .nav-icon {
+            color: white;
+        }
+        .nav-icon {
+            font-size: 1.2rem;
+            color: #555;
+            transition: color 0.3s ease;
         }
         .module {
             display: none;
@@ -336,7 +347,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        .search-bar {
+        .search-bar, .comparison-input {
             width: 100%;
             padding: 15px;
             border: 2px solid #D7CCC8;
@@ -344,7 +355,7 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
-        .search-bar:focus {
+        .search-bar:focus, .comparison-input:focus {
             outline: none;
             border-color: #538A19;
             box-shadow: 0 0 0 4px rgba(83, 138, 25, 0.1);
@@ -432,20 +443,6 @@
             flex-wrap: wrap;
             gap: 8px;
         }
-        #comparison-tray {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        #comparison-tray .btn {
-            margin-top: 0;
-        }
         @media (min-width: 769px) {
             .header {
                 justify-content: center;
@@ -504,14 +501,14 @@
             </div>
         </div>
         <div class="nav-tabs">
-            <button class="nav-tab active" data-module="dashboard">Dashboard</button>
-            <button class="nav-tab" data-module="profile">My Profile</button>
-            <button class="nav-tab" data-module="discovery">Self-Discovery</button>
-            <button class="nav-tab" data-module="careers">Career Hub</button>
-            <button class="nav-tab" data-module="pathway">Career Planning</button>
-            <button class="nav-tab" data-module="skillhub">Skill Hub</button> 
-            <button class="nav-tab" data-module="opportunities">Opportunities</button>
-            <button class="nav-tab" data-module="mentorship">Mentorship</button>
+            <button class="nav-tab active" data-module="dashboard"><i class="fa-solid fa-home nav-icon"></i>Dashboard</button>
+            <button class="nav-tab" data-module="profile"><i class="fa-solid fa-user nav-icon"></i>My Profile</button>
+            <button class="nav-tab" data-module="discovery"><i class="fa-solid fa-lightbulb nav-icon"></i>Self-Discovery</button>
+            <button class="nav-tab" data-module="careers"><i class="fa-solid fa-briefcase nav-icon"></i>Career Hub</button>
+            <button class="nav-tab" data-module="pathway"><i class="fa-solid fa-map-signs nav-icon"></i>Career Planning</button>
+            <button class="nav-tab" data-module="skillhub"><i class="fa-solid fa-graduation-cap nav-icon"></i>Skill Hub</button>
+            <button class="nav-tab" data-module="opportunities"><i class="fa-solid fa-award nav-icon"></i>Opportunities</button>
+            <button class="nav-tab" data-module="mentorship"><i class="fa-solid fa-user-tie nav-icon"></i>Mentorship</button>
         </div>
         <div id="dashboard" class="module active">
             <h2><span class="icon">D</span>Personal Dashboard</h2>
@@ -628,87 +625,56 @@
         <div id="careers" class="module">
             <h2><span class="icon">C</span>Career Exploration Hub</h2>
             <input type="text" class="search-bar" placeholder="Search for careers (e.g., 'software developer', 'doctor', 'teacher')..." oninput="filterCareers(this.value)">
-
-            <div id="comparison-tray">
-                <span style="font-weight: 600;">Selected for Comparison: <span id="comparison-count">0/2</span></span>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button id="start-compare-btn" class="btn" onclick="compareSelectedCourses()" disabled>Compare</button>
-                    <button id="clear-compare-btn" class="btn btn-secondary" onclick="clearComparison()">Clear</button>
-                </div>
-            </div>
-
-            <div id="comparison-results" class="roadmap-item" style="display: none; margin-top: 20px;">
-                </div>
-
             <div class="career-grid">
-                <div class="career-card" data-career-id="b.tech cse">
+                <div class="career-card" data-category="technology">
                     <div class="career-badge">Technology</div>
-                    <h3>B.Tech Computer Science Engineering</h3>
+                    <h3>Software Developer</h3>
                     <p>Design, develop, and maintain software applications and systems.</p>
                     <p><strong>Avg. Salary:</strong> ₹6-15 LPA</p>
                     <p><strong>Growth:</strong> 22% (Very High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <button class="btn" onclick="showCareerDetails('software-developer')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.tech cse', this)">Add to Compare</button>
-                    </div>
+                    <button class="btn" onclick="showCareerDetails('software-developer')">Learn More</button>
                 </div>
-                <div class="career-card" data-career-id="b.sc data science">
+                <div class="career-card" data-category="healthcare">
                     <div class="career-badge">Technology</div>
-                    <h3>B.Sc Data Science</h3>
+                    <h3>Data Scientist</h3>
                     <p>Analyze complex data to help organizations make informed decisions.</p>
                     <p><strong>Avg. Salary:</strong> ₹8-20 LPA</p>
                     <p><strong>Growth:</strong> 35% (Extremely High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <button class="btn" onclick="showCareerDetails('data-scientist')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.sc data science', this)">Add to Compare</button>
-                    </div>
+                    <button class="btn" onclick="showCareerDetails('data-scientist')">Learn More</button>
                 </div>
-                <div class="career-card" data-career-id="b.tech mechanical">
-                    <div class="career-badge">Engineering</div>
-                    <h3>B.Tech Mechanical Engineering</h3>
-                    <p>Focuses on the design, analysis, and manufacturing of mechanical systems.</p>
-                    <p><strong>Avg. Salary:</strong> ₹5-12 LPA</p>
-                    <p><strong>Growth:</strong> 10% (Medium)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <button class="btn" onclick="showCareerDetails('mechanical-engineer')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.tech mechanical', this)">Add to Compare</button>
-                    </div>
-                </div>
-                <div class="career-card" data-career-id="b.com">
-                    <div class="career-badge">Business</div>
-                    <h3>Bachelor of Commerce (B.Com)</h3>
-                    <p>Covers business, accounting, finance, and economics.</p>
-                    <p><strong>Avg. Salary:</strong> ₹4-10 LPA</p>
+                <div class="career-card" data-category="healthcare">
+                    <div class="career-badge">Healthcare</div>
+                    <h3>Medical Doctor</h3>
+                    <p>Diagnose and treat illnesses, injuries, and other health conditions.</p>
+                    <p><strong>Avg. Salary:</strong> ₹10-50 LPA</p>
                     <p><strong>Growth:</strong> 15% (High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <button class="btn" onclick="showCareerDetails('bcom-professional')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('b.com', this)">Add to Compare</button>
-                    </div>
+                    <button class="btn" onclick="showCareerDetails('doctor')">Learn More</button>
                 </div>
-                <div class="career-card" data-career-id="civil-services">
+                <div class="career-card" data-category="education">
+                    <div class="career-badge">Business</div>
+                    <h3>Digital Marketing Specialist</h3>
+                    <p>Create and manage online marketing campaigns across digital platforms.</p>
+                    <p><strong>Avg. Salary:</strong> ₹4-12 LPA</p>
+                    <p><strong>Growth:</strong> 25% (Very High)</p>
+                    <button class="btn" onclick="showCareerDetails('digital-marketing')">Learn More</button>
+                </div>
+                <div class="career-card" data-category="government">
                     <div class="career-badge">Government</div>
                     <h3>Civil Services (IAS/IPS)</h3>
                     <p>Serve in administrative and policy-making roles in government.</p>
                     <p><strong>Avg. Salary:</strong> ₹8-25 LPA</p>
                     <p><strong>Growth:</strong> Stable</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <button class="btn" onclick="showCareerDetails('civil-services')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('civil-services', this)">Add to Compare</button>
-                    </div>
+                    <button class="btn" onclick="showCareerDetails('civil-services')">Learn More</button>
                 </div>
-                <div class="career-card" data-career-id="ux-designer">
+                <div class="career-card" data-category="creative">
                     <div class="career-badge">Creative</div>
                     <h3>UX/UI Designer</h3>
                     <p>Design user experiences and interfaces for digital products.</p>
                     <p><strong>Avg. Salary:</strong> ₹5-18 LPA</p>
                     <p><strong>Growth:</strong> 30% (Very High)</p>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <button class="btn" onclick="showCareerDetails('ux-designer')">Learn More</button>
-                        <button class="btn btn-secondary" onclick="addToComparison('ux-designer', this)">Add to Compare</button>
-                    </div>
+                    <button class="btn" onclick="showCareerDetails('ux-designer')">Learn More</button>
                 </div>
             </div>
-            
             <div id="career-details" style="display: none; margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 12px;">
                 <h3>Software Developer - Detailed Overview</h3>
                 <div style="margin: 20px 0;">
@@ -740,6 +706,20 @@
                 <h3>Your Personalized Roadmap</h3>
                 <p>Based on your interest in <strong>Technology & Research</strong> and personality type <strong>INTJ</strong></p>
             </div>
+            
+            <div class="roadmap-item" id="course-comparison-input">
+                <h4>Course Comparison</h4>
+                <p style="color: #666; font-size: 0.95rem; margin-bottom: 10px;">Enter two courses to see a side-by-side comparison.</p>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <input type="text" class="comparison-input" id="course1-input" placeholder="e.g., B.Tech CSE">
+                    <input type="text" class="comparison-input" id="course2-input" placeholder="e.g., B.Sc Data Science">
+                    <button class="btn" onclick="compareCourses()">Compare</button>
+                </div>
+            </div>
+
+            <div id="comparison-results" class="roadmap-item" style="display: none; margin-top: 20px;">
+                </div>
+            
             <div class="roadmap-item">
                 <h4>Class 11-12 Subject Combination</h4>
                 <p><strong>Recommended:</strong> Physics, Chemistry, Mathematics, Computer Science</p>
@@ -804,121 +784,25 @@
                     <h4>JEE Main 2025</h4>
                     <p><strong>Registration:</strong> Jan 2025</p>
                     <p><strong>Exam Date:</strong> April 2025</p>
-                    <p><strong>Application Fee:</strong> ₹1000</p>
                     <button class="btn">Set Reminder</button>
                 </div>
                 <div class="dashboard-card">
                     <h4>NEET 2025</h4>
                     <p><strong>Registration:</strong> Feb 2025</p>
                     <p><strong>Exam Date:</strong> May 2025</p>
-                    <p><strong>Application Fee:</strong> ₹1700</p>
                     <button class="btn">Set Reminder</button>
                 </div>
                 <div class="dashboard-card">
                     <h4>CLAT 2025</h4>
                     <p><strong>Registration:</strong> Jan 2025</p>
                     <p><strong>Exam Date:</strong> May 2025</p>
-                    <p><strong>Application Fee:</strong> ₹4000</p>
                     <button class="btn">Set Reminder</button>
                 </div>
                 <div class="dashboard-card">
                     <h4>CUET 2025</h4>
                     <p><strong>Registration:</strong> Mar 2025</p>
                     <p><strong>Exam Date:</strong> May/June 2025</p>
-                    <p><strong>Application Fee:</strong> ₹750</p>
                     <button class="btn">Set Reminder</button>
-                </div>
-            </div>
-        </div>  
-        <div id="profile" class="module">
-            <h2><span class="icon">P</span>My Profile</h2>
-            <div class="profile-grid">
-                <div class="profile-sidebar">
-                    <div class="profile-avatar">S</div>
-                    <h3>Student Name</h3>
-                    <p>Class 11, Science</p>
-                    <div class="badge-container">
-                        <span class="profile-badge">Technology</span>
-                        <span class="profile-badge">Research</span>
-                        <span class="profile-badge">Data</span>
-                    </div>
-                </div>
-                <div class="profile-main">
-                    <div class="dashboard-card">
-                        <h3>Assessment Results</h3>
-                        <p><strong>Personality Type:</strong> INTJ (The Architect)</p>
-                        <p><strong>Interests:</strong> Investigative, Realistic</p>
-                        <p><strong>Top Aptitudes:</strong> Logical Reasoning, Numerical Ability</p>
-                    </div>
-                    <div class="dashboard-card">
-                        <h3>Recommended Career Paths</h3>
-                        <p>Computer Science Engineering</p>
-                        <p>Data Science</p>
-                        <p>AI/ML Engineering</p>
-                    </div>
-                    <div class="dashboard-card">
-                        <h3>My Saved Content</h3>
-                        <div class="filter-tabs">
-                            <button class="filter-tab active">Careers (4)</button>
-                            <button class="filter-tab">Scholarships (2)</button>
-                            <button class="filter-tab">Exams (3)</button>
-                        </div>
-                        <div class="saved-items">
-                            <div class="roadmap-item">
-                                <h4>Software Developer</h4>
-                                <p>Saved from Career Hub</p>
-                            </div>
-                            <div class="roadmap-item">
-                                <h4>Data Scientist</h4>
-                                <p>Saved from Career Hub</p>
-                            </div>
-                            <div class="roadmap-item">
-                                <h4>INSPIRE Scholarship</h4>
-                                <p>Saved from Opportunities</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="skillhub" class="module">
-            <h2><span class="icon">T</span>Skill Hub</h2>
-            <p>Bridge your skill gaps with free and paid courses. Your recommended skills are based on your career interests.</p>
-            <div class="filter-tabs">
-                <button class="filter-tab active">Recommended</button>
-                <button class="filter-tab">Trending</button>
-                <button class="filter-tab">All</button>
-            </div>
-            <div class="career-grid">
-                <div class="career-card">
-                    <h3>Introduction to Python</h3>
-                    <p class="certificate-provider">Coursera | Free Certificate</p>
-                    <p>Learn the fundamentals of Python for software development and data analysis.</p>
-                    <div class="certificate-tags">
-                        <span class="career-badge">Programming</span>
-                        <span class="career-badge">Beginner</span>
-                    </div>
-                    <button class="btn">Enroll Now</button>
-                </div>
-                <div class="career-card">
-                    <h3>Data Science Foundations</h3>
-                    <p class="certificate-provider">edX | Paid</p>
-                    <p>Master the basics of data manipulation, statistics, and machine learning.</p>
-                    <div class="certificate-tags">
-                        <span class="career-badge">Data Science</span>
-                        <span class="career-badge">Intermediate</span>
-                    </div>
-                    <button class="btn">Enroll Now</button>
-                </div>
-                <div class="career-card">
-                    <h3>UX/UI Design Principles</h3>
-                    <p class="certificate-provider">Google Certificate | Paid</p>
-                    <p>A comprehensive course to kickstart your career in user experience design.</p>
-                    <div class="certificate-tags">
-                        <span class="career-badge">Design</span>
-                        <span class="career-badge">Beginner</span>
-                    </div>
-                    <button class="btn">Enroll Now</button>
                 </div>
             </div>
         </div>
@@ -963,28 +847,28 @@
             const modules = document.querySelectorAll('.module');
             const links = document.querySelectorAll('[data-module-link]');
 
+            function showModule(moduleId) {
+                modules.forEach(module => module.classList.remove('active'));
+                navTabs.forEach(t => t.classList.remove('active'));
+                const targetModule = document.getElementById(moduleId);
+                targetModule.classList.add('active');
+                const activeTab = document.querySelector(`.nav-tab[data-module='${moduleId}']`);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                }
+            }
+
             navTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    navTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    modules.forEach(m => m.classList.remove('active'));
-                    const targetModule = document.getElementById(tab.dataset.module);
-                    targetModule.classList.add('active');
+                    const moduleId = tab.dataset.module;
+                    showModule(moduleId);
                 });
             });
 
             links.forEach(link => {
                 link.addEventListener('click', () => {
                     const targetId = link.dataset.moduleLink;
-                    navTabs.forEach(tab => {
-                        tab.classList.remove('active');
-                        if (tab.dataset.module === targetId) {
-                            tab.classList.add('active');
-                        }
-                    });
-                    modules.forEach(m => m.classList.remove('active'));
-                    const targetModule = document.getElementById(targetId);
-                    targetModule.classList.add('active');
+                    showModule(targetId);
                 });
             });
 
@@ -1039,46 +923,18 @@
                     skills: 'Thermodynamics, robotics, and CAD software.',
                     career: 'Mechanical Engineer, Manufacturing Engineer, Automotive Engineer.',
                     duration: '4 years.'
-                },
-                'civil-services': {
-                    title: 'Civil Services (IAS/IPS)',
-                    focus: 'Public administration, policy implementation, and law enforcement.',
-                    skills: 'Leadership, decision-making, and general knowledge of civics.',
-                    career: 'Indian Administrative Service (IAS) Officer, Indian Police Service (IPS) Officer.',
-                    duration: 'Preparation varies (often 1-3 years post-graduation).'
-                },
-                'ux-designer': {
-                    title: 'UX/UI Designer',
-                    focus: 'Creating user-friendly and aesthetically pleasing digital interfaces.',
-                    skills: 'Wireframing, prototyping, user research, and graphic design tools.',
-                    career: 'Product Designer, User Researcher, UI Artist.',
-                    duration: 'Degree in design or computer science, and portfolio building.'
-                }
-            };
-            
-            const coursesToCompare = [];
-            const comparisonCount = document.getElementById('comparison-count');
-            const startCompareBtn = document.getElementById('start-compare-btn');
-            const comparisonResultsDiv = document.getElementById('comparison-results');
-            const allAddButtons = document.querySelectorAll('.add-to-compare-btn');
-
-            window.addToComparison = (courseId, button) => {
-                if (coursesToCompare.length < 2) {
-                    coursesToCompare.push(courseId);
-                    button.disabled = true;
-                    button.textContent = 'Added';
-                    comparisonCount.textContent = coursesToCompare.length + '/2';
-                    if (coursesToCompare.length === 2) {
-                        startCompareBtn.disabled = false;
-                    }
                 }
             };
 
-            window.compareSelectedCourses = () => {
-                if (coursesToCompare.length === 2) {
-                    const course1 = courseData[coursesToCompare[0]];
-                    const course2 = courseData[coursesToCompare[1]];
+            window.compareCourses = () => {
+                const course1Input = document.getElementById('course1-input').value.toLowerCase();
+                const course2Input = document.getElementById('course2-input').value.toLowerCase();
+                const resultsDiv = document.getElementById('comparison-results');
+                
+                const course1 = courseData[course1Input];
+                const course2 = courseData[course2Input];
 
+                if (course1 && course2) {
                     const comparisonHtml = `
                         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                             <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #eaf5e1;">
@@ -1090,7 +946,7 @@
                                     <li><strong>Duration:</strong> ${course1.duration}</li>
                                 </ul>
                             </div>
-                            <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #c8e6c9;">
+                            <div style="flex: 1; min-width: 250px; padding: 15px; border-radius: 8px; background: #f3eaf5;">
                                 <h5>${course2.title}</h5>
                                 <ul style="list-style: none; padding: 0;">
                                     <li><strong>Focus:</strong> ${course2.focus}</li>
@@ -1101,24 +957,15 @@
                             </div>
                         </div>
                     `;
-                    comparisonResultsDiv.innerHTML = comparisonHtml;
-                    comparisonResultsDiv.style.display = 'block';
+                    resultsDiv.innerHTML = comparisonHtml;
+                    resultsDiv.style.display = 'block';
                 } else {
-                    comparisonResultsDiv.innerHTML = '<p style="color: red;">Please select exactly two courses to compare.</p>';
-                    comparisonResultsDiv.style.display = 'block';
+                    resultsDiv.innerHTML = '<p style="color: red;">Please enter valid course names from the list (e.g., B.Tech CSE, B.Sc Data Science).</p>';
+                    resultsDiv.style.display = 'block';
                 }
             };
 
-            window.clearComparison = () => {
-                coursesToCompare.length = 0;
-                comparisonCount.textContent = '0/2';
-                startCompareBtn.disabled = true;
-                comparisonResultsDiv.style.display = 'none';
-                allAddButtons.forEach(button => {
-                    button.disabled = false;
-                    button.textContent = 'Add to Compare';
-                });
-            };
+            showModule('dashboard');
         });
     </script>
 </body>
